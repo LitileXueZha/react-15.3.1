@@ -2,9 +2,89 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>React JSX语法</title>
+    <script src="../build/react.min.js"></script>
+    <script src="../build/react-dom.min.js"></script>
+    <script src="../build/browser.min.js"></script>
+    <script type="text/babel">
+        ReactDOM.render(
+            <pre>
+                这是一行代码块，ReactDOM.render(&lt;pre>这是一行代码块&lt;/pre>, document.getElementById('example1'))
+            </pre>,
+            document.getElementById('example1')
+        );
+
+        ReactDOM.render(
+            <div>
+                <label> { 1 + 1 } </label>
+                <pre>
+                    ReactDOM.render(&lt;label>{ 1+1 }&lt;/label>, document.getElementById('example2')),<br/>
+                    这里我表达不出来，好像里面只要有花括号就会被解析成表达式;而且里面得用换行符，虽然我是在pre里另写一行
+                </pre>
+            </div>,
+            document.getElementById('example2')
+        );
+
+        const i = 2;
+        ReactDOM.render(
+                <div>
+                    <label> { i === 1 ? 'True!':'False!' } </label>
+                    <code> i === 1 ? 'True!':'False!' </code>
+                </div>,
+            document.getElementById('example3')
+        );
+
+        const styleObj = {
+            'text-indent': '2em',
+            'color': 'blue'
+        };
+        ReactDOM.render(
+                <p style={ styleObj }>我的天</p>,
+            document.getElementById('example4')
+        );
+
+        ReactDOM.render(
+                <p>
+                    <label>Hello World!</label>
+                    {/*  一段注释  */}
+                </p>,
+            document.getElementById('example5')
+        );
+
+        const arr = [
+            <label>我是一个label</label>,
+            <span>我只是一个span</span>
+        ];
+        ReactDOM.render(
+                <p>{ arr }</p>,
+            document.getElementById('example6')
+        );
+    </script>
 </head>
 <body>
-
+<h1>1.ReactDOM.render(JSX, DOM)</h1>
+<div id="example1"></div>
+<h1>2.在JSX里写javascript表达式，放在<strong>{ }</strong>里</h1>
+<div id="example2"></div>
+<h3>3.JSX木有if-else语句，有三元运算符</h3>
+<div id="example3"></div>
+<h1>4.JSX推荐内联样式，就是把样式写在js中一个json对象里，当然也可以使用外部样式，不过用class的话会出错，我们得用className</h1>
+<div id="example4"></div>
+<h1>5.注释，写在花括号  --  <small>{/* 这就是个注释 */}</small></h1>
+<div id="example5"></div>
+<ol>
+    <li>
+        <h1>在JSX里插入数组，可以是一个NodeList,exp:{&lt;h1>1&lt;/h1>, &lt;h1>2&lt;/h1>,}</h1>
+        <p>数组会自动展开，并且需要放在花括号里</p>
+        <div id="example6"></div>
+    </li>
+    <li>
+        <h1>区分html tag和react component</h1>
+        <ul>
+            <li><code>var myDivElement = &lt;div className='foo' /></code></li>
+            <li><code>var MyComponent = React.createClass(...)</code></li>
+        </ul>
+    </li>
+</ol>
 </body>
 </html>
