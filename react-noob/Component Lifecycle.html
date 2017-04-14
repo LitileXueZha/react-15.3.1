@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>React 组件的生命周期</title>
+    <link rel="stylesheet" href="../normalize.css">
+    <script src="../build/react.min.js"></script>
+    <script src="../build/react-dom.min.js"></script>
+    <script src="../build/browser.min.js"></script>
+    <script src="../build/prefixfree.min.js"></script>
+    <style>
+        #exp1{
+        width: 200px;
+        height: 100px;
+        border-radius: 5px;
+        background: black;
+        color: white;
+        text-align: center;
+        line-height: 100px;
+        }
+    </style>
+    <script type="text/babel">
+        const OpacityComponent = React.createClass({
+            getInitialState: function () {
+                return {
+                    opacity: 1
+                };
+            },
+            render: function () {
+                return <div style={{ 'opacity': this.state.opacity }}>帅气涛，{ this.props.compliment }</div>;
+            },
+            componentDidMount: function () {
+                this.timer = setInterval(function () {
+                    let opacity = this.state.opacity;
+                    opacity -= 0.01;
+                    if(opacity < 0){
+                        opacity = 1;
+                    }
+                    this.setState({
+                        opacity: opacity
+                    });
+                }.bind(this), 50);
+            }
+        });
+        ReactDOM.render(<OpacityComponent compliment="你吃饭了吗？"/>, document.getElementById('exp1'));
+        
+        const ButtonComponent = React.createClass({
+            getInitialState: function () {
+                return { data: 0 };
+            },
+            increaseNum: function () {
+                this.setState({
+                    data: this.state.data + 1
+                });
+            },
+            render: function () {
+                return <div>
+                    <button onClick={ this.increaseNum }>添加</button>
+                    <ContentComponent myData={ this.state.data }/>
+                </div>;
+            }
+        });
+        const ContentComponent = React.createClass({
+            componentWillMount: function () {
+                console.info('Event componentWillMount trigger!');
+            },
+            componentDidMount: function () {
+                console.info('Event componentDidMount trigger!');
+            },
+            componentWillReceiveProps: function (props) {
+                console.info('Event componentWillReceiveProps trigger!');
+            },
+            shouldComponentUpdate: function (props, state) {
+                console.warn('Event componentShouldUpdate trigger!');
+                return true;
+            },
+            componentWillUpdate: function (props, state) {
+                console.warn('Event componentWillUpdate trigger!');
+            },
+            componentDidUpdate: function (props, state) {
+                console.warn('Event componentDidUpdate trigger!');
+            },
+            componentWillUnmount: function () {
+                console.log('Component will unmount');
+            },
+            render: function () {
+                return <label style={{ 'margin-left': 20 }}>{ this.props.myData }</label>;
+            }
+        });
+        ReactDOM.render(<ButtonComponent/>, document.getElementById('exp2'));
+    </script>
+</head>
+<body>
+<h1>React 组件的生命周周期（三个阶段）：</h1>
+<ul>
+    <li><strong>Mounting：</strong>已插入真实DOM</li>
+    <li><strong>Updating：</strong>正在被重新渲染</li>
+    <li><strong>Unmounting：</strong>已移除真实DOM</li>
+</ul>
+<dl>
+    <dt><strong>几个方法：</strong></dt>
+    <dd><b>componentWillMount</b></dd>
+    <dd><b>componentDidMount</b></dd>
+    <dd><b>componentWillReceiveProps</b></dd>
+    <dd><b>shouldComponentUpdate</b></dd>
+    <dd><b>componentWillUpdate</b></dd>
+    <dd><b>componentDidUpdate</b></dd>
+    <dd><b>componentWillUnmount</b></dd>
+</dl>
+<ul>
+    <li>
+        <h4>Example1:</h4>
+        <div id="exp1"></div>
+        <p>这里是在componentDidMount里设置的一个定时器。每当组件渲染完成，就改变透明度接着重新渲染</p>
+        <label>代码：</label>
+        <pre>
+        const OpacityComponent = React.createClass({
+            getInitialState: function () {
+                return {
+                    opacity: 1
+                };
+            },
+            render: function () {
+                return &lt;div style={{ 'opacity': this.state.opacity }}>帅气涛，{ this.props.compliment }&lt;/div>;
+            },
+            componentDidMount: function () {
+                this.timer = setInterval(function () {
+                    let opacity = this.state.opacity;
+                    opacity -= 0.01;
+                    if(opacity < 0){
+                        opacity = 1;
+                    }
+                    this.setState({
+                        opacity: opacity
+                    });
+                }.bind(this), 50);
+            }
+        });
+        </pre>
+    </li>
+    <li>
+        <h4>Example2:</h4>
+        <div id="exp2"></div>
+        <p>打开控制台看看，为啥我点击按钮只触发了四个事件。刚刚我把这么多事件加到里面去，真实累！都想撸一把了。另外在那个shouldComponentUpdate里return false的话呢，就不会继续下去了</p>
+        <span>代码：</span>
+        <pre>
+        const ContentComponent = React.createClass({
+            componentWillMount: function () {
+                console.info('Event componentWillMount trigger!');
+            },
+            componentDidMount: function () {
+                console.info('Event componentDidMount trigger!');
+            },
+            componentWillReceiveProps: function (props) {
+                console.info('Event componentWillReceiveProps trigger!');
+            },
+            shouldComponentUpdate: function (props, state) {
+                console.warn('Event componentShouldUpdate trigger!');
+                return true;
+            },
+            componentWillUpdate: function (props, state) {
+                console.warn('Event componentWillUpdate trigger!');
+            },
+            componentDidUpdate: function (props, state) {
+                console.warn('Event componentDidUpdate trigger!');
+            },
+            componentWillUnmount: function () {
+                console.log('Component will unmount');
+            },
+            render: function () {
+                return &lt;label style={{ 'margin-left': 20 }}>{ this.props.myData }&lt;/label>;
+            }
+        });
+        </pre>
+    </li>
+</ul>
+</body>
+</html>
