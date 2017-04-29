@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>第一个react页面</title>
+    <style>
+
+    </style>
+    <script src="build/react.js"></script>
+    <script src="build/react-dom.js"></script>
+    <script type="text/javascript">
+        window.onload = function () {
+            var hello = React.createClass({
+                displayName: 'hello',
+                render: function () {
+                    return React.createElement('div', null, 'hello', this.props.name);
+                }
+            });
+            ReactDOM.render(
+                    React.createElement(hello, { name: 'world'}),
+                    document.getElementById('container')
+            );
+
+            var MyComponent = React.createClass({
+                render: function () {
+                    return (
+                        '<div>
+                            { this.props.name }
+                        </div>'
+                    );
+                }
+            });
+            React.render(<MyComponent name='frodo' />, document.getElementById('container'));
+        }
+    </script>
+</head>
+<body>
+<div id="container"></div>
+</body>
+</html>

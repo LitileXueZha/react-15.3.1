@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>React refs属性（贼好）</title>
+    <link rel="stylesheet" href="../normalize.css">
+    <script src="../build/react.min.js"></script>
+    <script src="../build/react-dom.min.js"></script>
+    <script src="../build/browser.min.js"></script>
+    <script src="../build/prefixfree.min.js"></script>
+    <script type="text/babel">
+        const Exp1Component = React.createClass({
+            getInitialState: function () {
+                return {
+                    text: '你吃饭了吗？'
+                };
+            },
+            handleChange: function (event) {
+                this.setState({
+                    text: event.target.value
+                });
+            },
+            render: function () {
+                return <div>
+                    <input type="text" onChange={ this.handleChange }/>
+                    <p>帅气涛，{ this.state.text }</p>
+                </div>;
+            }
+        });
+        ReactDOM.render(<Exp1Component />, document.getElementById('exp1'));
+
+        const Exp2Component = React.createClass({
+            getInitialState: function () {
+                return {
+                    text: '你吃饭了吗？'
+                };
+            },
+            handleChange: function () {
+                this.setState({
+                    text: this.refs.text.value
+                });
+            },
+            render: function () {
+                return <div>
+                    <input type="text" ref="text" onChange={ this.handleChange }/>
+                    <Exp22Component text={ this.state.text }/>
+                </div>;
+            }
+        });
+        const Exp22Component = React.createClass({
+            render: function () {
+                return <p>帅气涛，{ this.props.text }</p>;
+            }
+        });
+        ReactDOM.render(<Exp2Component/>, document.getElementById('exp2'));
+    </script>
+</head>
+<body>
+<h1>React Refs属性</h1>
+<p>React 支持一种非常特殊的属性 Ref ，你可以用来绑定到 render() 输出的任何组件上。</p>
+<p>其实就是在JSX上写一个类似于DOM的属性，不过是ref而已，然后在这个Class里通过this.refs.name调用，返回的是这个DOM节点</p>
+<ul>
+    <li>
+        <div id="exp1"> </div>
+        <pre>
+            handleChange: function (event) {
+                this.setState({
+                    text: event.target.value
+                });
+            },
+        </pre>
+        <p>这种方法通过传入一个event对象。再获取目标属性的值，如果我们要操作另一个DOM的话，就会很麻烦。例如，获取下一个,event.target.
+            parentNode.nextSibling。在火狐中，换行符也被算做DOM节点，所以我们得判断.tagName != 'BR'
+        </p>
+    </li>
+    <li>
+        <div id="exp2"></div>
+        <pre>
+            handleChange: function () {
+                this.setState({
+                    text: this.refs.text.value
+                });
+            },
+            render: function () {
+                return &lt;div>
+                    &lt;input type="text" ref="text" onChange={ this.handleChange }/>
+                    &lt;Exp22Component text={ this.state.text }/>
+                &lt;/div>;
+            }
+        </pre>
+        <p>ref属性极大地简化了查找DOM的操作，不知道是不是通过data-来搞得。。。</p>
+    </li>
+</ul>
+</body>
+</html>

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>React 组件</title>
+    <link rel="stylesheet" href="../normalize.css">
+    <script src="../build/react.min.js"></script>
+    <script src="../build/react-dom.min.js"></script>
+    <script src="../build/browser.min.js"></script>
+    <script src="../build/prefixfree.min.js"></script>
+    <style>
+        .square{
+            width: 100px;
+            height: 100px;
+            background: black;
+        }
+    </style>
+    <script type="text/babel">
+        const HelloWord = React.createClass({
+            render: function () {
+                return <label>Hello Word!</label>;
+            }
+        });
+        ReactDOM.render(<HelloWord />, document.getElementById('example1'));
+
+        const MyComponent1 = React.createClass({
+            render: function () {
+                return <span>下午好！{ this.props.name }</span>;
+            }
+        });
+        ReactDOM.render(<MyComponent1 name="我是用props传递的"/>, document.getElementById('example2'));
+
+        const Website = React.createClass({
+            render: function () {
+                return <p>
+                    <Name name={ this.props.name }/>
+                    <Anchor href={ this.props.href }/>
+                </p>;
+            }
+        });
+        const Name = React.createClass({
+            render: function () {
+                return <label>{ this.props.name }</label>;
+            }
+        });
+        const Anchor = React.createClass({
+            render: function () {
+                return <a href={ this.props.href }>{ this.props.href }</a>
+            }
+        });
+        ReactDOM.render(<Website name="我的网站" href="http://www.ningtaostudy.cn"/>,
+            document.getElementById('example3')
+        );
+        
+        const BorderChange = React.createClass({
+            getInitialState: function () {
+                return { isRound: false };
+            },
+            changeBorder: function () {
+                this.setState({
+                    isRound: !this.state.isRound
+                });
+            },
+            render: function () {
+                let s = this.state.isRound?'50%':'0';
+                return <div onMouseOver={ this.changeBorder } onMouseLeave={ this.changeBorder } style={{ 'border-radius': s }} className="square"> </div>;
+            }
+        });
+        ReactDOM.render(<BorderChange />, document.getElementById('example4'));
+
+        const GoodAfternoon = React.createClass({
+            getDefaultProps: function () {
+                return {
+                    now: 'afternoon',
+                    name: 'you'
+                };
+            },
+            render: function () {
+                return <label>{ this.props.name }, good { this.props.now }!</label>;
+            }
+        });
+        ReactDOM.render(<GoodAfternoon name="帅气涛"/>, document.getElementById('example5'));
+
+        const AssemblePS = React.createClass({
+            getInitialState: function () {
+                return {
+                    description: '我的网站：',
+                    target: 'http://www.ningtaostudy.cn'
+                };
+            },
+            render: function () {
+                return <p>
+                    <AssembleP description={ this.state.description } />
+                    <AssembleS target={ this.state.target } />
+                </p>;
+            }
+        });
+        const AssembleP = React.createClass({
+            render: function () {
+                return <label>{ this.props.description }</label>;
+            }
+        });
+        const AssembleS = React.createClass({
+            render: function () {
+                return <a href={ this.props.target }>{ this.props.target }</a>;
+            }
+        });
+        ReactDOM.render(<AssemblePS />, document.getElementById('example6'));
+
+        const title = 123;
+        const MyTitle = React.createClass({
+            propTypes: {
+                title: React.PropTypes.string.isRequired
+            },
+            render: function () {
+                return <p>{ this.props.title }</p>;
+            }
+        });
+        ReactDOM.render(<MyTitle title={ title }/>, document.getElementById('example7'));
+    </script>
+</head>
+<body>
+<h1>hello world</h1>
+<div id="example1"></div>
+<hr>
+<h1>this.props传递参数</h1>
+<div id="example2"></div>
+<hr>
+<h1>复合组件</h1>
+<div id="example3"></div>
+<h1>React state</h1>
+<p>
+    React 把组件看成是一个状态机（State Machines）。通过与用户的交互，实现不同状态，然后渲染 UI，让用户界面和数据保持一致。
+</p>
+<p>
+    React 里，只需更新组件的 state，然后根据新的 state 重新渲染用户界面（不要操作 DOM）。
+</p>
+<p>
+    以下实例中创建了 BorderChange 组件，getInitialState 方法用于定义初始状态，也就是一个对象，这个对象可以通过 this.state 属性读
+    取。当鼠标移入（移出）组件，导致状态变化，this.setState 方法就修改状态值，每次修改以后，自动调用 this.render 方法，再次渲染组件。
+</p>
+<div id="example4"></div>
+<hr>
+<h1>React props</h1>
+<p>state 和 props 主要的区别在于 props 是不可变的，而 state 可以根据与用户交互来改变。这就是为什么有些容器组件需要定义 state 来更新和修改数据。 而子组件只能通过 props 来传递数据。</p>
+<ul>
+    <li>
+        <p>通过<strong>getDefaultProps()</strong>修改默认的props</p>
+        <div id="example5"></div>
+        <label>一旦在ReactDOM.render里指定了props属性，则会覆盖getDefaultProps里设置的属性</label>
+    </li>
+    <li>
+        <p>应用state和props的组合，子组件使用props传递，父组件设置state</p>
+        <div id="example6"></div>
+    </li>
+    <li>
+        <p>Props验证使用<b>propTypes</b>,React.propTypes很多验证器供使用</p>
+        <div id="example7"></div>
+    </li>
+</ul>
+<hr>
+</body>
+</html>

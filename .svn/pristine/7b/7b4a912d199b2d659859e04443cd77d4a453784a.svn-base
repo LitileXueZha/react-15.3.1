@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="x-ua-compatible" content="IE=edge"/>
+    <title>React 组件 API</title>
+    <link rel="stylesheet" href="../normalize.css">
+    <script src="../build/react.min.js"></script>
+    <script src="../build/react-dom.min.js"></script>
+    <script src="../build/browser.min.js"></script>
+    <script src="../build/prefixfree.min.js"></script>
+    <style>
+        #exp1{
+            cursor: pointer;
+            user-select: none;
+        }
+    </style>
+    <script type="text/babel">
+        const Counter = React.createClass({
+            getInitialState: function () {
+                return {
+                    countNum: 0
+                };
+            },
+            handleClick: function () {
+                this.setState(function (state) {
+                    return {
+                        countNum: state.countNum + 1
+                    };
+                });
+            },
+            render: function () {
+                return <h4 onClick={ this.handleClick } id="exp1">(￢︿̫̿￢☆)，你点了我{ this.state.countNum }次！</h4>;
+            }
+        });
+        ReactDOM.render(<Counter />, document.getElementById('exp1'));
+
+        const ReplaceComponent = React.createClass({
+            getInitialState: function () {
+                return {
+                    fontSize: 10,
+                    textIndent: '2em'
+                };
+            },
+            handleOver: function () {
+                this.replaceState({
+                    fontSize: 20
+                });
+            },
+            render: function () {
+                return <p onMouseOver={ this.handleOver } style={{ 'font-size': this.state.fontSize, 'text-indent': this.state.textIndent }}>把鼠标移上来</p>;
+            }
+        });
+        ReactDOM.render(<ReplaceComponent />, document.getElementById('exp2'));
+
+        const PropComponent = React.createClass({
+            getDefaultProps: function () {
+                return {
+                    name: 'world'
+                };
+            },
+            render: function () {
+                return <button>Hello,{ this.props.name }!</button>;
+            }
+        });
+        ReactDOM.render(<PropComponent/>, document.getElementById('exp3'));
+
+        const ForceUpdateFalseComponent = React.createClass({
+            getInitialState: function () {
+                return {
+                    text: '你吃饭了没？'
+                };
+            },
+            handleChange: function (event) {
+                console.info(event.target);
+                this.setState({
+                    text: event.target.value
+                });
+            },
+            render: function () {
+                return <div>
+                    <input type="text" onChange={ this.handleChange }/> 帅气涛，
+                    <label>{ this.state.text }</label>
+                </div>;
+            }
+        });
+        ReactDOM.render(<ForceUpdateFalseComponent/>, document.getElementById('exp4'));
+        var sss = '你吃放了吗？';
+        const ForceUpdateComponent = React.createClass({
+            render: function () {
+                return <label>帅气涛，{ sss }</label>;
+            }
+        });
+        const forceUpdate = ReactDOM.render(<ForceUpdateComponent/>, document.getElementById('exp5'), function () {
+            alert(this.isMounted());
+        });
+        document.getElementById('inexp').onclick = function () {
+            sss = document.getElementById('in1').value;
+            forceUpdate.forceUpdate();
+        };
+
+        document.getElementById('exp6').onclick = function () {
+            console.log(ReactDOM.findDOMNode(forceUpdate));
+        };
+    </script>
+</head>
+<body>
+<h1>React 组件API</h1>
+<ul>
+    <li><label>设置状态：</label><code>setState</code></li>
+    <li><label>替换状态：</label><code>replaceState</code></li>
+    <li><del><label>设置属性：</label><code>setProps</code></del><sub>-------------已弃用</sub></li>
+    <li><del><label>替换属性：</label><code>replaceProps</code></del><sub>----------已弃用</sub></li>
+    <li><label>强制更新：</label><code>forceUpdate</code></li>
+    <li><label>获取DOM节点：</label><code>findDOMNode</code></li>
+    <li><label>判断组件挂载状态：</label><code>isMounted</code></li>
+</ul>
+<ol>
+    <li>
+        <div id="exp1"></div>
+    </li>
+    <li>
+        <div id="exp2"></div>
+    </li>
+    <li>
+        <div id="exp3"></div>
+    </li>
+    <li>
+        <ul>
+            <li><div id="exp4"></div></li>
+            <li>
+                <input type="text" id="in1" value="吃饭了吗？">
+                <button id="inexp">forceUpdate</button>
+                <div id="exp5"></div></li>
+        </ul>
+    </li>
+    <li>
+        <button id="exp6">查看控制台，我获取了上个示例的DOM</button>
+    </li>
+    <li>
+        <label id="exp7">注意一个弹出框</label><br/>
+        <span>代码：</span>
+        <pre>
+        const forceUpdate = ReactDOM.render(&lt;ForceUpdateComponent/>, document.getElementById('exp5'), function () {
+            alert(<b>this.isMounted()</b>);
+        });
+        </pre>
+    </li>
+</ol>
+</body>
+</html>

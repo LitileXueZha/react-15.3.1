@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>React Ajax</title>
+    <link rel="stylesheet" href="../normalize.css">
+    <script src="../build/react.min.js"></script>
+    <script src="../build/react-dom.min.js"></script>
+    <script src="../build/browser.min.js"></script>
+    <script src="../build/prefixfree.min.js"></script>
+    <script type="text/babel">
+        var xhr = (function () {
+            if(typeof XMLHttpRequest != 'undefined'){
+                return new XMLHttpRequest();
+            } else if(typeof ActiveXObject != 'undefined'){
+                if(typeof arguments.callee.activeXString != 'string'){
+                    const version = ['MSXML2.XMLHttp.6.0', 'MSXML2.XMLHttp.3.0', 'MSXML2.XMLHttp'];
+                    for(let i=0, len=version.length;i<len;i++){
+                        try{
+                            new ActiveXObject(version[i]);
+                            arguments.callee.activeXString = version[i];
+                            break;
+                        } catch (e){}
+                    }
+                }
+                return new ActiveXObject(arguments.callee.activeXStirng);
+            } else{
+                return null;
+            }
+        })();  //  创建XMLHttpRequest对象兼容
+        const MyGist = React.createClass({
+            getInitialState: function () {
+                return {
+                    name: '',
+                    lastGistUrl: ''
+                };
+            },
+            componentDidMount: function () {
+                xhr.open('get', this.props.source, true);
+                xhr.send(null);
+                xhr.onreadystatechange = function () {
+                    if(xhr.readyState == 4 && xhr.status == 200){
+                        let lastGist = eval(xhr.responseText);
+                        this.setState({
+                            name: lastGist[0].owner.login,
+                            lastGistUrl: lastGist[0].html_url
+                        });
+                    }
+                }.bind(this);
+            },
+            render: function () {
+                return <div>
+                    <label>{ this.state.name }的最新Gist地址：</label>
+                    <a href={ this.state.lastGistUrl }>{ this.state.lastGistUrl }</a>
+                </div>;
+            },
+            componentWillUnmount: function () {
+                xhr.abort();
+            }
+        });
+        ReactDOM.render(<MyGist source="https://api.github.com/users/LitileXueZha/gists"/>, document.getElementById('example'));
+    </script>
+</head>
+<body>
+<div id="example"></div>
+<p>通过componentDidMount里的ajax来获取数据，再用this.state渲染</p>
+</body>
+</html>
