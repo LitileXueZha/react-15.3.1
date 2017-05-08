@@ -1,0 +1,62 @@
+/*  填充整个背景  */
+html, body{
+  width: 100%;
+  height: 100%;
+  background-color: #f7f7f7;
+}
+//  最后插入到的容器
+#app{
+  width: 100%;
+  height: 100%;
+}
+//  整个容器
+.container{
+  width: 100%;
+  height: 550px;
+  position: relative;
+}
+//  图片区域
+.img-area{
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+
+  @at-root {
+    //  一个图片区域
+    .item{
+      position: absolute;
+
+      margin: 0;
+      width: 380px;
+      height: 380px;
+      background: white;
+      padding: 40px;
+      box-sizing: border-box
+    }
+    //  图片设置
+    .item-img{
+      max-width: 300px;
+    }
+    //  图片标题
+    .item-title>h2{
+      margin: 0;
+      position: relative;
+      top: 50px;
+      text-align: center;
+      font-size: 16px;
+      color: darkgray;
+      font-weight: normal;
+      font-family: 楷体;
+    }
+  }
+}
+//  图片控制
+.img-controller{
+  width: 100%;
+  position: absolute;
+  left: 0;
+  bottom: 30px;
+  z-index: 999;
+  text-align: center;
+}
