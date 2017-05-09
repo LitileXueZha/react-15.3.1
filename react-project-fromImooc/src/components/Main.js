@@ -4,7 +4,6 @@ require('styles/App.scss');
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-
 //  导入图片数据并转化为url地址
 let imgDatas = require('../data/imgDatas.json');
 imgDatas = (function (imgDatasArr) {
@@ -86,6 +85,38 @@ class ImgComponent extends React.Component{
   }
 }
 
+//  控制组件
+class ImgControllerComponent extends React.Component{
+  //  点击方法
+  handleClick(e){
+    if(this.props.arrange.isCenter){
+      this.props.reverse();
+    } else{
+      this.props.center()
+    }
+    e.preventDefault();
+    e.stopPropagation();
+  }
+
+  render(){
+    let imgControllerUnitClassName = 'imgController-unit';
+
+    //  如果显示居中图片，控制按钮显示居中态
+    if(this.props.arrange.isCenter){
+      imgControllerUnitClassName += ' is-center';
+
+      //  对应翻转图片，则也翻转
+      if(this.props.arrange.isReverse){
+        imgControllerUnitClassName += ' is-reverse';
+      }
+    }
+
+    return (
+      <span className={ imgControllerUnitClassName } onClick={ this.handleClick.bind(this) }> </span>
+    );
+  }
+}
+
 class AppComponent extends React.Component {
   constructor(props){
     super(props);
@@ -153,7 +184,7 @@ class AppComponent extends React.Component {
       vPosRangeX = vPosRange.x,
 
       imgArrangeTopArr = [],
-      topImgNum = Math.ceil(Math.random() * 2),  //  取一个或者不取
+      topImgNum = Math.floor(Math.random() * 2),  //  取一个或者不取
       topImgSpliceIndex = 0,
       imgArrangeCenterArr = imgArrangeArr.splice(centerIndex, 1);
 
@@ -259,7 +290,7 @@ class AppComponent extends React.Component {
 
   render() {
     let imgsComponent = [],
-        imgControllerComponent = [];
+        imgsControllerComponent = [];
 
     imgDatas.forEach( (value, index) => {
       if(!this.state.imgArrangeArr[index]){
@@ -276,8 +307,17 @@ class AppComponent extends React.Component {
       imgsComponent.push(
         <ImgComponent
           data={ value }
-          key={ index }
+          key={ 'img'+ index }
           ref={ 'img' +index }
+          arrange = { this.state.imgArrangeArr[index] }
+          reverse = { this.reverse(index) }
+          center = { this.center(index) }
+        />
+      );
+
+      imgsControllerComponent.push(
+        <ImgControllerComponent
+          key={ 'controller'+ index }
           arrange = { this.state.imgArrangeArr[index] }
           reverse = { this.reverse(index) }
           center = { this.center(index) }
@@ -291,7 +331,7 @@ class AppComponent extends React.Component {
           { imgsComponent }
         </section>
         <nav className="img-controller">
-          { imgControllerComponent }
+          { imgsControllerComponent }
         </nav>
       </div>
     );

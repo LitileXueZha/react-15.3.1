@@ -1,3 +1,13 @@
+/*  创建自定义字体  */
+@font-face {
+  font-family: 'awesome';
+  src:  url('../fonts/FontAwesome.otf'),
+        url('../fonts/fontawesome-webfont.eot') format('embedded-opentype'),
+        url('../fonts/fontawesome-webfont.svg') format('svg'),
+        url('../fonts/fontawesome-webfont.ttf') format('truetype'),
+        url('../fonts/fontawesome-webfont.woff') format('woff');
+}
+
 /*  填充整个背景  */
 html, body{
   width: 100%;
@@ -12,7 +22,7 @@ html, body{
 //  整个容器
 .container{
   width: 100%;
-  height: 608px;
+  height: 638px;
   position: relative;
 }
 //  图片区域
@@ -72,6 +82,7 @@ html, body{
           cursor: pointer;
           display: flex;
           align-items: center;
+          backface-visibility: hidden;
           p{
             text-indent: 2em;
             font-family: 幼圆;
@@ -89,4 +100,41 @@ html, body{
   bottom: 30px;
   z-index: 999;
   text-align: center;
+
+  @at-root {
+    .imgController-unit{
+      display: inline-block;
+      width: 30px;
+      height: 30px;
+      margin: 0 5px;
+      text-align: center;
+      border-radius: 50%;
+      background-color: rgba(169, 169, 169, 0.7);
+      cursor: pointer;
+      transform: scale(0.5);
+      vertical-align: middle;
+      transition: transform .6s ease-in-out, background-color .3s, color .3s;
+
+      //  居中样式
+      &.is-center{
+        background-color: darkgray;
+        transform: scale(1);
+
+        //  添加图标
+        &::after{
+          font-family: 'awesome';
+          content: '\f112';
+          line-height: 30px;
+          font-size: 14px;
+        }
+
+        //  翻转样式
+        &.is-reverse{
+          background-color: black;
+          transform: rotateY(180deg);
+          color: white;
+        }
+      }
+    }
+  }
 }
