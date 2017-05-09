@@ -2,7 +2,7 @@
 html, body{
   width: 100%;
   height: 100%;
-  background-color: #f7f7f7;
+  background-color: rgba(169, 169, 169, 0.3);
 }
 //  最后插入到的容器
 #app{
@@ -12,7 +12,7 @@ html, body{
 //  整个容器
 .container{
   width: 100%;
-  height: 550px;
+  height: 608px;
   position: relative;
 }
 //  图片区域
@@ -21,33 +21,63 @@ html, body{
   height: 100%;
   position: relative;
   overflow: hidden;
+  perspective: 1800px;
 
   @at-root {
     //  一个图片区域
     .item{
       position: absolute;
-
       margin: 0;
-      width: 380px;
-      height: 380px;
+      width: 320px;
+      height: 320px;
       background: white;
       padding: 40px;
-      box-sizing: border-box
-    }
-    //  图片设置
-    .item-img{
-      max-width: 300px;
-    }
-    //  图片标题
-    .item-title>h2{
-      margin: 0;
-      position: relative;
-      top: 50px;
-      text-align: center;
-      font-size: 16px;
-      color: darkgray;
-      font-weight: normal;
-      font-family: 楷体;
+      box-sizing: border-box;
+      transform-style: preserve-3d;
+      cursor: pointer;
+      transform-origin: 0 50% 0;
+      transition: transform .6s ease-in-out, left .6s ease-in-out, top .6s ease-in-out;
+
+      //  翻转样式
+      &.is-reverse{
+        transform: translate(320px) rotateY(180deg);
+      }
+      //  图片设置
+      .item-img{
+        max-width: 240px;
+      }
+      //  图片标题
+      .item-title{
+        h2{
+          margin: 0;
+          position: relative;
+          top: 35px;
+          text-align: center;
+          font-size: 16px;
+          color: darkgray;
+          font-weight: normal;
+          font-family: 楷体;
+        }
+        //  图片背面
+        .item-back{
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background-color: white;
+          padding: 60px 40px;
+          box-sizing: border-box;
+          transform: rotateY(180deg);
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          p{
+            text-indent: 2em;
+            font-family: 幼圆;
+          }
+        }
+      }
     }
   }
 }
