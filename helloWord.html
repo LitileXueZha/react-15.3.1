@@ -11,7 +11,7 @@
     <script src="build/browser.min.js"></script>
     <script type="text/babel">
         window.onload = function () {
-            var hello = React.createClass({
+            let hello = React.createClass({
                 displayName: 'hello',
                 render: function () {
                     return React.createElement('div', null, 'hello', this.props.name);
@@ -22,7 +22,7 @@
                 document.getElementById('container')
             );
 
-            var MyComponent = React.createClass({
+            let MyComponent = React.createClass({
                 render: function () {
                     return <div> { this.props.name } </div>;
                 }
